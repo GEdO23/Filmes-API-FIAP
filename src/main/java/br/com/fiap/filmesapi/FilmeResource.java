@@ -1,5 +1,6 @@
 package br.com.fiap.filmesapi;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import br.com.fiap.filmesapi.model.Filme;
@@ -22,7 +23,7 @@ public class FilmeResource {
 	// READ ALL
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Filme> index() {
+	public List<Filme> index() throws SQLException {
 		return service.findAll();
 	}
 	
@@ -30,7 +31,7 @@ public class FilmeResource {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response findById(@PathParam("id") Long id) {
+	public Response findById(@PathParam("id") Long id) throws SQLException {
 		var filme = service.findById(id);
 		return filme == null ? 
 				Response.status(Response.Status.NOT_FOUND).build() : 
@@ -40,7 +41,7 @@ public class FilmeResource {
 	// CREATE FILME
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(Filme filme) {
+	public Response create(Filme filme) throws SQLException {
 		return !service.create(filme) ? 
 				Response.status(Response.Status.BAD_REQUEST).build() : 
 					Response.ok(filme).build();
@@ -50,7 +51,7 @@ public class FilmeResource {
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response update(@PathParam("id") Long id, Filme filme) {
+	public Response update(@PathParam("id") Long id, Filme filme) throws SQLException {
 		
 		if (service.findById(id) == null) 
 			return Response.status(Response.Status.NOT_FOUND).build();
@@ -65,13 +66,13 @@ public class FilmeResource {
 	// DELETE BY ID
 	@DELETE
 	@Path("{id}")
-	public Response delete(@PathParam("id") Long id) {
+	public Response delete(@PathParam("id") Long id) throws SQLException {
 		var filme = service.findById(id);
 		
 		if (filme == null)
 			return Response.status(Response.Status.NOT_FOUND).build();
 		
-		service.delete(filme);
+		service.delete(id);
 		
 		return Response.ok(filme).build();
 	}

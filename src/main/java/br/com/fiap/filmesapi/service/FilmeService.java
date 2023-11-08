@@ -1,5 +1,6 @@
 package br.com.fiap.filmesapi.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import br.com.fiap.filmesapi.data.FilmeDao;
@@ -9,11 +10,11 @@ public class FilmeService {
 	
 	FilmeDao dao = new FilmeDao();
 
-	public List<Filme> findAll() {
+	public List<Filme> findAll() throws SQLException {
 		return dao.findAll();
 	}
 
-	public Filme findById(Long id) {
+	public Filme findById(Long id) throws SQLException {
 		return dao.findById(id);
 	}
 	
@@ -27,7 +28,7 @@ public class FilmeService {
 		return true;
 	}
 
-	public boolean create(Filme filme) {
+	public boolean create(Filme filme) throws SQLException {
 		if (!validar(filme)) return false;
 		
 		dao.create(filme);
@@ -35,7 +36,7 @@ public class FilmeService {
 		return true;
 	}
 
-	public boolean update(Long id, Filme filme) {
+	public boolean update(Long id, Filme filme) throws SQLException {
 		if (!validar(filme)) return false;
 		
 		dao.update(id, filme);
@@ -44,8 +45,8 @@ public class FilmeService {
 		
 	}
 
-	public void delete(Filme filme) {
-		dao.delete(filme);
+	public void delete(Long id) throws SQLException {
+		dao.delete(id);
 		System.out.println("Filme removido com sucesso!");
 	}
 	
